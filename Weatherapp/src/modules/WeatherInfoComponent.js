@@ -1,11 +1,12 @@
 import styled from "styled-components";
 
 const WeatherInfoIcons = {
-    sunset : "/icons/temp.svg",
-    sunrise : "/icons/temp.svg",
-    humidity : "/icons/humidity.svg",
-    wind : "/icons/wind.svg",
-    pressure : "/icons/pressure.svg",
+    Sunset : "/icons/temp.svg",
+    Sunrise : "/icons/temp.svg",
+    Humidity : "/icons/humidity.svg",
+    Wind : "/icons/wind.svg",
+    Pressure: "/icons/pressure.svg",
+    "Sea Level" : "/icons/wind.svg"
 };
 
 export const WeatherIcons ={
@@ -35,7 +36,6 @@ const WeatherCondition = styled.div`
     align-items : center;
     width : 100%;
     justify-content : space-between;
-    margin : 30px auto; 
 `;
 
 const WeatherLogo = styled.img`
@@ -46,7 +46,7 @@ const WeatherLogo = styled.img`
 
 
 const Condition = styled.span`
-    margin : 20px auto;
+    margin :  auto;
     font-size : 14px;
     & span{
         font-size : 28px;
@@ -56,17 +56,12 @@ const Condition = styled.span`
 const Location = styled.span`
     font-size : 28px;
     font-weight : bold;
-
 `;
 
 const WeatherInfoLabel = styled.span`
-    font-size : 14px;
+    font-size : 16px;
     font-weight : bold;
-    margin : 20px 25px 10px;
-    text-align : start;
-    width : 90%;
-
-
+    text-align : center;
 `;
 
 const WeatherInfoContainer = styled.div`
@@ -76,12 +71,11 @@ const WeatherInfoContainer = styled.div`
     justify-content : space-evenly;
     align-items : center;
     flex-wrap : wrap;
-
 `;
 
  const InfoContainer = styled.div`
     display : flex;
-    margin : 5px 10px;
+    margin : 10px 10px;
     flex-direction : row;
     justify-content : space-evenly;
     align-items : center;
@@ -90,17 +84,16 @@ const WeatherInfoContainer = styled.div`
  const InfoIcon = styled.img`
     width : 36px;
     height : 36px;
-
  `;
 
  const InfoLabel = styled.span`
     display : flex;
     flex-direction : column;
+    font-weight : 500;
     font-size : 14px;
     margin : 15px;
     &span {
         font-size : 12px;
-        text-transform : capitalize;
     }
  `;
 
@@ -118,7 +111,7 @@ const WeatherInfoComponent=(props)=>{
 }
 
 const WeatherComponent =(props)=>{
-    const {weather} =props;
+    const { weather, forecastWeatherData } = props;
     const isDay=weather?.weather[0].icon?.includes('d');
     const getTime = (timeStamp) =>{
         return `${new Date(timeStamp * 1000).getHours()} : ${new Date(timeStamp * 1000).getMinutes()}`
@@ -127,19 +120,19 @@ const WeatherComponent =(props)=>{
     return(
         <>
             <WeatherCondition>
-                <Condition><span>{`${Math.floor(weather?.main?.temp-273)}°C`}</span>{` | ${weather?.weather[0].description}`}</Condition>
-                <WeatherLogo src={WeatherIcons[weather?.weather[0].icon]} />
+                <Condition><span>{`${Math.floor(forecastWeatherData===undefined ? weather?.main?.temp-273 : forecastWeatherData.main.temp -273)}°C`}</span>{` | ${forecastWeatherData===undefined ? weather?.weather[0].description : forecastWeatherData.weather[0].description}`}</Condition>
+                <WeatherLogo  src={WeatherIcons[forecastWeatherData === undefined ? weather?.weather[0].icon : forecastWeatherData?.weather[0].icon]} />
             </WeatherCondition>
             <Location>{`${weather?.name}, ${weather?.sys?.country}`}</Location>
             <WeatherInfoLabel>Weather Info</WeatherInfoLabel>
             <WeatherInfoContainer>
                 <WeatherInfoComponent 
-                    name={isDay ? "sunset" : "sunrise"} 
-                    value={`${getTime(weather?.sys[isDay ? "sunset" : "sunrise" ])}`}
+                    name={forecastWeatherData === undefined ? (isDay ? "Sunset" : "Sunrise") : ("Sea Level") } 
+                    value={forecastWeatherData===undefined ? `${getTime(weather?.sys[isDay ? "sunset" : "sunrise" ])}` : forecastWeatherData?.main?.sea_level}
                 />
-                <WeatherInfoComponent name={"humidity"} value={weather?.main?.humidity} />
-                <WeatherInfoComponent name={"wind"} value={weather?.wind?.speed} />
-                <WeatherInfoComponent name={"pressure"} value={weather?.main?.pressure} />
+                <WeatherInfoComponent name={"Humidity"} value={forecastWeatherData===undefined ? weather?.main?.humidity : forecastWeatherData?.main?.humidity } />
+                <WeatherInfoComponent name={"Wind"} value={forecastWeatherData === undefined ? weather?.wind?.speed : forecastWeatherData?.wind?.speed } />
+                <WeatherInfoComponent name={"Pressure"} value={forecastWeatherData === undefined ? weather?.main?.pressure : forecastWeatherData?.main?.pressure} />
             </WeatherInfoContainer>
         </>
 

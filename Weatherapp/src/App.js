@@ -9,10 +9,11 @@ import Faqs from "./modules/Faqs";
 import Homepage from "./modules/Homepage";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
+import Maps from './modules/Map';
 function App() {
   return (
     <div>
-      <Header />
+      <Header  />
       <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/signup" element={<Signup />} />
@@ -20,7 +21,8 @@ function App() {
                 <Route path="/aboutus" element={<AboutUs />} />
                 <Route path="faqs" element={<Faqs />} />
                 <Route path="/contactus" element={<Contactus />} />
-                <Route path="/homepage" element={<Homepage />} />
+                <Route path="/homepage" element={<Homepage/>} />
+                <Route path='/map' element={<Maps />} />
         </Routes>
     </div>
   )

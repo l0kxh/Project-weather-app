@@ -1,19 +1,9 @@
 .block{
-    display:flex;
-  flex-direction: column;
-  margin : auto;
-  margin-top : 80px;
-  align-items: center;
-  box-shadow: 0 3px 3px 0 rgb(28, 27, 27);
-  padding : 20px 10px;
-  border-radius: 4px;
-  width: 450px;
-  background: rgba(255, 252, 252, 0.699);
+  background: rgba(255, 252, 252, 0.9 );
 }
 .applabel{
     color : rgb(7, 7, 7);
-    font-size: 18px;
+    font-size: 22px;
     font-weight : bold;
     display: inline-block;
-  
 }

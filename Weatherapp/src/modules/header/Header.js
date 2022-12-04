@@ -1,17 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Header.css";
 import {Navbar , Nav, Container ,Button ,Form  } from "react-bootstrap";
-import {Link , NavLink, Route , Routes, useNavigate} from 'react-router-dom';
+import { NavLink,  useNavigate} from 'react-router-dom';
 import { TiWeatherPartlySunny } from "react-icons/ti";
 import { useSelector } from "react-redux";
 import { clearLoginStatus } from "../slices/userSlice";
 import { useDispatch } from "react-redux";
+import styled from "styled-components";
 
-function Header(){
+const InputContainer = styled.input`
+  border:1px solid #14A44D;
+  margin-right:15px;
+  border-radius:5px;
+  &:focus{
+    outline : none;
+    border : 1.5px solid #14A44D;
+  }
+`
 
+function Header({ setCityName,fetchWeather}) {
+  const [city, setCity] = useState();
     let navigate=useNavigate();
 
-    let { userObj, isError, isLoading, isSuccess, errMsg } = useSelector(
+    let {  isSuccess } = useSelector(
       (state) => state.user
     );
     //get dispathc function
@@ -30,7 +41,6 @@ function Header(){
             <Navbar bg="light"  expand="lg">
         <Container fluid>
           <Navbar.Brand href="/"><TiWeatherPartlySunny size={32}/><b>Weather Forecast </b></Navbar.Brand>
-
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll">
             <Nav
@@ -38,19 +48,25 @@ function Header(){
               style={{ maxHeight: '100px' }}
               navbarScroll
             >
-              <Nav.Link as={NavLink}  to="/">HOME</Nav.Link>
+                <Nav.Link as={NavLink} to="/">HOME</Nav.Link>
+                <Nav.Link as={NavLink} to="map">MAP</Nav.Link>
               <Nav.Link as={NavLink}  to="aboutus">ABOUT US</Nav.Link>
               <Nav.Link as={NavLink}   to="faqs">FAQ's</Nav.Link>
               <Nav.Link as={NavLink}   to="contactus">CONTACT US</Nav.Link>
             </Nav>
             <Form className="d-flex">
-              <Form.Control
+              {/* <Form.Control
                 type="search"
                 placeholder="Search"
                 className="me-2"
-                aria-label="Search"
-              />
-              <Button variant="outline-success">Search</Button>
+                  aria-label="Search"
+                  onTex
+              /> */}
+                <InputContainer onChange={e=>setCity(e.target.value)} placeholder="Enter City" />
+                <Button variant="outline-success" disabled={city === "" ? true : false} onClick={() => {
+                  setCityName(city);
+                  fetchWeather()
+                }} >Search</Button>
             </Form>
             {isSuccess !== true ? (
                 <>
