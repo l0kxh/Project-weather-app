@@ -2,7 +2,7 @@ const exp=require('express');
 const userApp=exp.Router()
 const expressAsyncHandler=require("express-async-handler")
 const bcryptjs=require("bcryptjs");
-const jwt=require("jsonwebtoken")
+const jwt=require("jsonwebtoken");
 require('dotenv').config()
 userApp.use(exp.json())
 userApp.use(exp.urlencoded());

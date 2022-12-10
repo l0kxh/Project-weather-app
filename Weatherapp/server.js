@@ -25,10 +25,12 @@ mclient.connect(DBurl)
 
     //create collection object
     let usercollectionObject=dbObj.collection("usercollection")
+    let userfeedbackObject = dbObj.collection("userfeedback");
 
 
     //sharing collection objects to APIs
     app.set("usercollectionObject",usercollectionObject);
+    app.set("userfeedbackObject",userfeedbackObject);
 
     console.log("DB connection success")
 })
@@ -36,8 +38,10 @@ mclient.connect(DBurl)
 
 
 const userApp=require('./APIS/userApi');
+const feedApi=require('./APIS/feedApi');
 
-app.use('/user-api',userApp)
+app.use('/user-api',userApp);
+app.use('/feed-api',feedApi);
 
 app.use('*',(request , response )=>{
     response.sendFile(path.join(__dirname,'./build/index.html'))

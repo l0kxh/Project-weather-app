@@ -1,7 +1,6 @@
 import { useForm} from "react-hook-form";
 import { Form, Button } from "react-bootstrap";
 import { MdLogin } from "react-icons/md";
-import axios from "axios";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import './Login.css';

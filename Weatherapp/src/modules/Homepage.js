@@ -1,9 +1,10 @@
 import axios from "axios";
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import CityComponent from "./CityComponent.js";
 import WeatherComponent from "./WeatherInfoComponent";
 import './Homepage.css'
 import ForecastComponents from "./ForecastComponents.js";
+import Feed from "./feed/Feed";
 const API_K = "452c0f36bef65e371e0fef4d0aa653ce";
 function Homepage() {
   const [city, updateCity] = useState();
@@ -23,29 +24,32 @@ function Homepage() {
     e.preventDefault();
     const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_K}`)
     updateWeather(response.data);
+    forecastWeather();
   }
   const forecastWeather = async () => {  
     const response = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=452c0f36bef65e371e0fef4d0aa653ce`)
     setForecastData(response.data);
     console.log(response.data)
   }
-  if (city !== undefined) {
-    forecastWeather();
-  }
   return (
     <>
-    <div className="text-dark Box col-8 col-sm-6 col-md-4 mx-auto block">
+    <div style={{flexDirection:"row",justifyContent:"space-evenly",alignItems:"center",display:"flex",width:"100%"}}>
+        
+      <div className="text-dark Box col-8 col-sm-6 col-md-4  block">
       <div className="applabel"> WEATHER FORECAST </div>
       {weather  ? (
           <WeatherComponent weather={weather} forecastWeatherData={forecastWeatherData} />
       ) : (
             <CityComponent updateCity={updateCity} fetchWeather={fetchWeather}  fetchLoc={fetchLoc} />
       )}
+        </div>
+        {weather ? (
+          <Feed cityName={city}/>) : (<></>)}
       </div>
       {weather && forecastData!==undefined ? (
         <ForecastComponents data={forecastData?.list} setForecastWeatherData={setForecastWeatherData} />
       ) : (<></>)}
-    </>
+      </>
   );
 }
 export default Homepage;
