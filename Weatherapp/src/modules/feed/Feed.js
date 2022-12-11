@@ -4,10 +4,23 @@ import { Form } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useForm } from 'react-hook-form';
+import styled from 'styled-components';
 
+const FeedContainer = styled.div`
+    display : flex;
+    width:100%;
+    flex-direction : column;
+    overflow-y : auto;
+    margin : 5;
+    margin-top :10;
+    &::-webkit-scrollbar{
+        width:0px;
+    }
+`;
 
 function Feed({ cityName }) {
     const [show, setShow] = useState(false);
+    const [posts, setPosts] = useState();
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const {
@@ -26,19 +39,29 @@ function Feed({ cityName }) {
 
     const getData = async()=>{
         let response = await axios.get(`/feed-api/getfeeds/${cityName}`);
-        console.log(response);
+        const data = response.data.payload;
+        data.reverse();
+        setPosts(data);
     }
 
-    useEffect(async ()=>{
+    useEffect(  ()=>{
         getData();
     },[])
 
     return (
-        <div style={{ width: "450px", backgroundColor: "rgba(255, 252, 252, 0.9 )", height: "425px" }} className="rounded text-center" >
-            <div className="applabel"> FEED </div>
+        <div  className="text-dark Box col-8 col-sm-6 col-md-4 mt-3  block" style={{height:"400px"}} >
             <Button variant="dark" onClick={handleShow}>
                 Add Your Feed
             </Button>
+            {posts &&
+                <FeedContainer>
+                    {posts.map((item, index)=>(
+                        <div key={index} style={{ padding: "20px", margin: "5px", backgroundColor: "white", boxShadow:"0px 8px 24px rgba(149, 157, 165, 0.2)"}}>
+                            <p style={{fontSize:"16",fontWeight:"bold"}}>{item.username}</p>
+                            <p style={{fontSize:"14",fontWeight:"500"}}>{item.message}</p>
+                        </div>
+                    ))}
+                </FeedContainer>}
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Map,
     Popup,
@@ -29,7 +29,7 @@ export const WeatherIcons = {
     "50n": '/icons/haze.png',
 }
 function Maps() {
-    const [center, setCenter] = useState([10.77, 10.88])
+    const [center, setCenter] = useState([17.5389, 78.3863])
     const [place, setPlace] = useState(null);
     const [weather, setWeather] = useState();
     const getWeather = async() => {
@@ -37,7 +37,9 @@ function Maps() {
         const data = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${center[0]}&lon=${center[1]}&appid=${API_K}`)
         setWeather(data.data)
     }
-    console.log(weather)
+    useEffect(() => {
+        getWeather();
+    },[center])
     return (
         <Map
             center={center}
@@ -47,11 +49,10 @@ function Maps() {
             ondblclick={(e) => {
                 setCenter([e.latlng.lat, e.latlng.lng])
                 setPlace(e.latlng)
-                getWeather(center);
             }}
         >
             {place &&
-                <Popup position={[place.lat, place.lng]} onClose={() => setPlace(null)} closeOnClick={true} closeButton={true} >
+                <Popup position={[place.lat, place.lng]} onClose={() => { setPlace(null); setWeather(null); }} closeOnClick={true} closeButton={true} >
                     <div style={{textAlign:"center",fontSize:16,fontWeight:"bold"}}>{weather?.name}</div>
                     <div style={{
                         backgroundColor: "white",
@@ -60,7 +61,7 @@ function Maps() {
                         alignItems:"center"
                     }}>
                         <div>
-                            <span style={{fontSize:14,fontWeight:"bold"}}>Temperature</span> : {weather?.main?.temp-273}°C<br/>
+                            <span style={{fontSize:14,fontWeight:"bold"}}>Temperature</span> : {Math.round(weather?.main?.temp-273)}°C<br/>
                             <span style={{ fontSize: 14, fontWeight: "bold" }}>Humidity</span> : {weather?.main?.humidity}<br/>
                             <span style={{ fontSize: 14, fontWeight: "bold" }}>Pressure</span> : {weather?.main?.pressure}<br/>
                             <span style={{ fontSize: 14, fontWeight: "bold" }}>Wind Speed</span> : {weather?.wind?.speed}

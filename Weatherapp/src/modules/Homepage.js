@@ -33,9 +33,9 @@ function Homepage() {
   }
   return (
     <>
-    <div style={{flexDirection:"row",justifyContent:"space-evenly",alignItems:"center",display:"flex",width:"100%"}}>
+    <div style={{flexDirection:"row",justifyContent:"space-evenly",alignItems:"center",display:"flex",width:"100%",flexWrap:"wrap"}}>
         
-      <div className="text-dark Box col-8 col-sm-6 col-md-4  block">
+      <div className="text-dark Box col-8 col-sm-6 col-md-4 mb-3  block">
       <div className="applabel"> WEATHER FORECAST </div>
       {weather  ? (
           <WeatherComponent weather={weather} forecastWeatherData={forecastWeatherData} />
